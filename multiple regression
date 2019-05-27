@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb  5 14:25:04 2019
+
+@author: dhriti
+"""
+import pandas as pd
+import numpy as np
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from sklearn import datasets, linear_model, metrics
+dataset=pd.read_csv('/home/dhriti/Downloads/iris.csv')
+
+attr1=dataset.iloc[:20,[0]].values
+
+mdataset=pd.read_csv('/home/dhriti/Downloads/iris1.csv')
+x=mdataset.iloc[:,[0,1,2,3]].values
+#print(x)
+
+"""
+
+attr1---Y (dependent)
+attr2---X (independent)
+
+LINEAR REGRESSION
+"""
+attr1_train=mdataset.iloc[20:,[0]].values
+#print(type(attr1))...numpy array
+attr2_train=mdataset.iloc[20:,[2]].values
+
+attr1_train=attr1_train.reshape(len(attr1_train),1)
+attr2_train=attr2_train.reshape(len(attr2_train),1)
+
+#print(attr1_test)
+attr2_test=mdataset.iloc[:20,[2]].values
+#print(attr2_test)
+
+
+
+regr=linear_model.LinearRegression()
+regr.fit(attr2_train,attr1_train)
+
+attr1_predict=regr.predict(attr2_test)
+
+plt.scatter(attr2_train,attr1_train,color='green')
+plt.scatter(attr2_test,attr1_predict,color='black')
+plt.plot(attr2_train,regr.predict(attr2_train),linewidth=3,color='red')
+
+
+deviation=[]
+for i in range(0,19):
+    deviation.append(abs(attr1_predict[i]-attr1[i]))
+   
+print("Linear Regression");print(deviation)
+#plt.plot(attr2_test,attr1_t1,color='red')
+#plt.show()
+"""
+deviation=0
+for i in range(0,19):
+    deviation=deviation+attr1[i]-attr1_t1[i]
+   
+    print(deviation)
+    print(attr1)
+    print(attr1_t1)
+    percent_deviation=(abs(deviation)/20)*100
+    """
+#print("Linear regression deviation--",float(percent_deviation))
+
+
+""" multivariate regression """
+
+attr1_train=mdataset.iloc[20:,[0]].values
+#print(type(attr1))...numpy array
+attr2_train=mdataset.iloc[20:,[1,2,3]].values
+
+
+#print(attr1_test)
+attr2_test=mdataset.iloc[:20,[1,2,3]].values
+#print(attr2_test)
+
+
+
+regr=linear_model.LinearRegression()
+regr.fit(attr2_train,attr1_train)
+
+attr1_predict=regr.predict(attr2_test)
+
+'''plt.scatter(attr2_train,attr1_train,color='green')
+plt.scatter(attr2_test,attr1_predict,color='black')
+plt.plot(attr2_train,regr.predict(attr2_train),linewidth=3,color='red')'''
+
+
+deviation=[]
+for i in range(0,19):
+    deviation.append(abs(attr1_predict[i]-attr1[i]))
+   
+
+print("Multiple Regression");print(deviation)
+#plt.scatter(attr2_train,attr1_train,color='green')
+#plt.scatter(deviation,color='black')
+#plt.plot(attr2_train,regr.predict(attr2_train),linewidth=3,color='red')
+
+
+'''import matplotlib.pyplot as plt 
+import numpy as np 
+from sklearn import datasets, linear_model 
+import pandas as pd 
+
+df = pd.read_csv("/home/dhriti/Downloads/iris.csv")
+df1=pd.read_csv("/home/dhriti/Downloads/iris1.csv")
+#new_df=df.dropna(axis = 0, how ='any')
+
+X = df.iloc[:,[0]].values + df.iloc[:,[1]].values
+Y= df.iloc[:, [2]].values
+#Y = df['C'] 
+#X = df['A'] 
+print(X)  
+X=X.reshape(len(X),1) 
+Y=Y.reshape(len(Y),1) 
+   
+# Split the data into training/testing sets 
+X_train = X[:-30] 
+X_test = X[-30:] 
+   
+# Split the targets into training/testing sets 
+Y_train = Y[:-30] 
+Y_test = Y[-30:] 
+   
+
+# Plot outputs 
+plt.scatter(X_test, Y_test,  color='black') 
+plt.title('Test Data') 
+plt.xlabel('A,B') 
+plt.ylabel('C') 
+plt.xticks(()) 
+plt.yticks(()) 
+   
+  
+# Create linear regression object 
+regr = linear_model.LinearRegression() 
+   
+# Train the model using the training sets 
+regr.fit(X_train, Y_train) 
+   
+# Plot outputs 
+plt.plot(X_test, regr.predict(X_test), color='red',linewidth=3) 
+plt.show() 
+#print(Y_test)
+#print(Y_train)
+#print(regr.predict(X_test))
+Y1= df1.iloc[:, [2]].values
+Y1_test = Y1[-30:]
+
+for i in range(30):
+     if Y_test[i]==0:
+         print(Y1_test[i]+regr.predict(X_test[i])+(regr.predict(X_test[i])-regr.predict(Y1_test[i])))
+print('$')
+
+a=((Y1_test)-regr.predict(X_test))
+b=regr.predict(X_test)
+
+table={}
+for j in range(30):
+    table[j]=[Y1_test[j],b[j],a[j]]
+print(table)   
+
+'''
